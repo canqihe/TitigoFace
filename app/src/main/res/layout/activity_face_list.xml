@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context=".activity.FaceListActivity">
+
+    <include layout="@layout/base_toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/search_btn"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible"
+            android:background="@color/main_color"
+            android:gravity="center"
+            android:text="搜索"
+            android:textColor="@android:color/white" />
+
+        <EditText
+            android:id="@+id/user_search_edit"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:drawableLeft="@drawable/ic_baseline_search_24"
+            android:drawablePadding="5dp"
+            android:hint="搜索（手机号）"
+            android:inputType="number"
+            android:maxLength="11"
+            android:maxLines="1" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/user_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar" />
+
+</LinearLayout>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="16dp">
+
+    <ImageView
+        android:id="@+id/u_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="16dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/default_img" />
+
+    <TextView
+        android:id="@+id/u_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/u_img"
+        android:text="Colin He"
+        android:textColor="#333333"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/u_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/u_name"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/u_img"
+        android:text="15811892378"
+        android:textColor="#666666"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/u_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/u_img"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/u_img"
+        android:text="地址"
+        android:textColor="#666666"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/reg_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/u_img"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="2020-09-09 15:12"
+        android:textColor="#666666"
+        android:textSize="18dp" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:layout_below="@+id/u_img"
+        android:layout_marginTop="16dp"
+        android:background="#cccccc" />
+
+</RelativeLayout>

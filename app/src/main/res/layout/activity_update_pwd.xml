@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.UpdatePwdActivity">
+
+    <include layout="@layout/base_toolbar" />
+
+
+    <EditText
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:id="@+id/old_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:maxLines="1"
+        android:maxLength="6"
+        android:inputType="numberPassword"
+        android:layout_marginTop="16dp"
+        android:hint="旧密码" />
+
+    <EditText
+        android:id="@+id/new_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:inputType="numberPassword"
+        android:maxLength="6"
+        android:maxLines="1"
+        android:hint="新密码" />
+
+    <EditText
+        android:id="@+id/confirm_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:maxLength="6"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:maxLines="1"
+        android:inputType="numberPassword"
+        android:layout_marginTop="16dp"
+        android:hint="确认新密码" />
+
+    <Button
+        android:id="@+id/submit_update"
+        android:layout_width="match_parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:background="@color/main_color"
+        android:layout_marginTop="16dp"
+        android:textSize="18dp"
+        android:text="提交"
+        android:textColor="@android:color/white"
+        android:layout_height="54dp"/>
+
+</LinearLayout>

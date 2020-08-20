@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#fd6627</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#2196f3</color>
+    <color name="color_bg_notification">#80000000</color>
+    <color name="color_bg_name">#80000000</color>
+    <color name="pass_color">#00c853</color>
+    <color name="main_color">#fd6627</color>
+</resources>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextureView
+            android:id="@+id/single_camera_texture_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.trueu.titigoface.widget.FaceRectView
+            android:id="@+id/single_camera_face_rect_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/scan_tx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:onClick="scanqrcode"
+        android:layout_centerVertical="true"
+        android:text="点击扫码"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_radius"
+        android:padding="10dp"
+        android:layout_gravity="right"
+        android:drawablePadding="3dp"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:drawableTop="@mipmap/scan_icon"
+        android:textColor="@android:color/white"
+        android:textSize="15dp" />
+
+    <RelativeLayout
+        android:id="@+id/check_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pass_color">
+
+        <TextView
+            android:id="@+id/pass_tx"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@mipmap/pass"
+            android:drawablePadding="18dp"
+            android:text="通过"
+            android:visibility="gone"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/white"
+            android:textSize="65dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:id="@+id/single_camera_recycler_view_person"
+            android:layout_width="match_parent"/>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom"
+        android:background="#80000000">
+
+        <ImageView
+            android:id="@+id/logo_img"
+            android:layout_width="180dp"
+            android:layout_height="64dp"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="18dp"
+            android:src="@mipmap/logo_white" />
+
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:text="8月14日 14:52:22"
+            android:visibility="gone"
+            android:textColor="@android:color/white"
+            android:textSize="34dp" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:src="@mipmap/face_wrapper"
+        android:layout_height="match_parent"/>
+
+    <Switch
+        android:id="@+id/single_camera_switch_liveness_detect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/common_bottom_margin"
+        android:text="@string/liveness_detect"
+        android:visibility="invisible" />
+</FrameLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical"
+    tools:context=".activity.SettingActivity">
+
+    <include layout="@layout/base_toolbar"/>
+
+    <TextView
+        android:id="@+id/reg_btn"
+        android:background="@android:color/white"
+        android:text="注册人脸"
+        android:textColor="#666666"
+        android:textSize="20dp"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/ic_baseline_person_add_24"
+        android:drawablePadding="18dp"
+        android:paddingLeft="18dp"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="#cccccc"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="18dp"
+        android:layout_height="0.7dp"/>
+
+    <TextView
+        android:id="@+id/list_btn"
+        android:background="@android:color/white"
+        android:text="人脸列表"
+        android:textColor="#666666"
+        android:textSize="20dp"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/ic_baseline_group_24"
+        android:drawablePadding="18dp"
+        android:paddingLeft="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="#cccccc"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="18dp"
+        android:layout_height="0.7dp"/>
+
+    <TextView
+        android:id="@+id/pwd_btn"
+        android:background="@android:color/white"
+        android:text="修改密码"
+        android:textColor="#666666"
+        android:textSize="20dp"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="18dp"
+        android:paddingLeft="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textColor="#999999"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginTop="16dp"
+        android:text="© 广州和诚科技"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

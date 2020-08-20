@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView 
+        android:id="@+id/show_nfc_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    
+    <Button 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="26位韦根"
+        android:onClick="send26wiegand"/>
+    
+    <Button 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="32位韦根"
+        android:onClick="send32wiegand"/>
+    
+    <Button 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="34位韦根"
+        android:onClick="send34wiegand"/>
+    
+    <TableLayout
+        android:id="@+id/tableLayoutTPS967"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <TableRow >
+            <Button 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:text="设置韦根D0信号高电平"
+		        android:onClick="setWGd0High"/>
+		    
+		    <Button 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:text="设置韦根D0信号低电平"
+		        android:onClick="setWGd0Low"/>
+        </TableRow>
+        
+        <TableRow >
+            <Button 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:text="设置韦根D1信号高电平"
+		        android:onClick="setWGd1High"/>
+		    
+		    <Button 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:text="设置韦根D1信号低电平"
+		        android:onClick="setWGd1Low"/>
+        </TableRow>
+        
+        <TextView
+            android:id="@+id/wiegandInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"/>
+    </TableLayout>
+    
+    
+
+</LinearLayout>

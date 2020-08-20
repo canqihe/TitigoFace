@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appbar"
+    android:layout_width="match_parent"
+    android:layout_height="62dp"
+    android:background="@color/main_color">
+
+    <ImageButton
+        android:id="@+id/back_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:background="@android:color/transparent"
+        android:paddingLeft="18dp"
+        android:paddingRight="12dp"
+        app:srcCompat="@drawable/ic_baseline_arrow_back_24"
+        tools:ignore="VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/back_icon"
+        android:layout_marginLeft="16dp"
+        android:gravity="center"
+        android:paddingRight="16dp"
+        android:text="应用设置"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"/>
+
+    <ImageView
+        android:id="@+id/right_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_baseline_done_24"/>
+
+</RelativeLayout>
