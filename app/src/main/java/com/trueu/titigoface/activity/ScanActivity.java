@@ -22,7 +22,6 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
 public class ScanActivity extends AppCompatActivity implements QRCodeView.Delegate {
     private static final String TAG = ScanActivity.class.getSimpleName();
-    private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 666;
     @BindView(R.id.back_icon)
     ImageButton backIcon;
     @BindView(R.id.toolbar_title)
@@ -92,6 +91,7 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
     protected void onDestroy() {
         super.onDestroy();
         mZXingView.onDestroy(); // 销毁二维码扫描控件
+        MyTTS.getInstance().release();
         startActivity(new Intent(this, RegisterAndRecognizeActivity.class));
     }
 

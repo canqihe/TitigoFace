@@ -12,8 +12,8 @@
     <TextView
         android:id="@+id/reg_btn"
         android:background="@android:color/white"
-        android:text="注册人脸"
-        android:textColor="#666666"
+        android:text="添加人脸"
+        android:textColor="#333333"
         android:textSize="20dp"
         android:gravity="center_vertical"
         android:drawableLeft="@drawable/ic_baseline_person_add_24"
@@ -26,7 +26,7 @@
     <View
         android:layout_width="match_parent"
         android:background="#cccccc"
-        android:layout_marginLeft="64dp"
+        android:layout_marginLeft="18dp"
         android:layout_marginRight="18dp"
         android:layout_height="0.7dp"/>
 
@@ -34,7 +34,7 @@
         android:id="@+id/list_btn"
         android:background="@android:color/white"
         android:text="人脸列表"
-        android:textColor="#666666"
+        android:textColor="#333333"
         android:textSize="20dp"
         android:gravity="center_vertical"
         android:drawableLeft="@drawable/ic_baseline_group_24"
@@ -46,7 +46,7 @@
     <View
         android:layout_width="match_parent"
         android:background="#cccccc"
-        android:layout_marginLeft="64dp"
+        android:layout_marginLeft="18dp"
         android:layout_marginRight="18dp"
         android:layout_height="0.7dp"/>
 
@@ -54,10 +54,30 @@
         android:id="@+id/pwd_btn"
         android:background="@android:color/white"
         android:text="修改密码"
-        android:textColor="#666666"
+        android:textColor="#333333"
         android:textSize="20dp"
         android:gravity="center_vertical"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="18dp"
+        android:paddingLeft="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="#cccccc"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_height="0.7dp"/>
+
+    <TextView
+        android:id="@+id/feedback_btn"
+        android:background="@android:color/white"
+        android:text="意见反馈"
+        android:textColor="#333333"
+        android:textSize="20dp"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
         android:drawablePadding="18dp"
         android:paddingLeft="18dp"
         android:layout_width="match_parent"

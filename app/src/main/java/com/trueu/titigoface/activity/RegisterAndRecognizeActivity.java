@@ -275,9 +275,8 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
      * 初始化引擎
      */
     private void initEngine() {
-
         MyTTS.getInstance().init(RegisterAndRecognizeActivity.this);//初始化语音
-        PosUtil.setLedLight(200);//led灯亮度
+        PosUtil.setLedLight(180);//led灯亮度  0~225
 
         ftEngine = new FaceEngine();
         ftInitCode = ftEngine.init(this, DetectMode.ASF_DETECT_MODE_VIDEO, ConfigUtil.getFtOrient(this),
@@ -336,6 +335,7 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
     protected void onDestroy() {
 
         PosUtil.setLedPower(0);//关灯
+        MyTTS.getInstance().release();//释放语音播报
 
         if (cameraHelper != null) {
             cameraHelper.release();
@@ -477,7 +477,7 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
                 previewSize = camera.getParameters().getPreviewSize();
                 drawHelper = new DrawHelper(previewSize.width, previewSize.height, previewView.getWidth(), previewView.getHeight(),
                         displayOrientation, cameraId, isMirror, false, false);
-                Log.i(TAG, "onCameraOpened: " + drawHelper.toString());
+                Log.i("数据，drawHelper", "onCameraOpened: " + drawHelper.toString());
                 // 切换相机的时候可能会导致预览尺寸发生变化
                 if (faceHelper == null || lastPreviewSize == null || lastPreviewSize.width != previewSize.width || lastPreviewSize.height != previewSize.height) {
                     Integer trackedFaceCount = null;
@@ -509,7 +509,6 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
                 if (facePreviewInfoList != null && faceRectView != null && drawHelper != null) {
                     drawPreviewInfo(facePreviewInfoList);
                 }
-                registerFace(nv21, facePreviewInfoList);
                 clearLeftFace(facePreviewInfoList);
 
                 if (facePreviewInfoList != null && facePreviewInfoList.size() > 0 && previewSize != null) {
@@ -579,49 +578,6 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
         cameraHelper.start();
     }
 
-    private void registerFace(final byte[] nv21, final List<FacePreviewInfo> facePreviewInfoList) {
-        if (registerStatus == REGISTER_STATUS_READY && facePreviewInfoList != null && facePreviewInfoList.size() > 0) {
-            registerStatus = REGISTER_STATUS_PROCESSING;
-            Observable.create(new ObservableOnSubscribe<Boolean>() {
-                @Override
-                public void subscribe(ObservableEmitter<Boolean> emitter) {
-                    boolean success = FaceServer.getInstance().registerNv21(RegisterAndRecognizeActivity.this,
-                            nv21.clone(),
-                            previewSize.width,
-                            previewSize.height,
-                            facePreviewInfoList.get(0).getFaceInfo(),
-                            "registered " + faceHelper.getTrackedFaceCount());
-
-                    emitter.onNext(success);
-
-                }
-            }).subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<Boolean>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-
-                        }
-
-                        @Override
-                        public void onNext(Boolean success) {
-                            String result = success ? "register success!" : "register failed!";
-                            registerStatus = REGISTER_STATUS_DONE;
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            e.printStackTrace();
-                            registerStatus = REGISTER_STATUS_DONE;
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        }
-    }
 
     private void drawPreviewInfo(List<FacePreviewInfo> facePreviewInfoList) {
         List<DrawInfo> drawInfoList = new ArrayList<>();
@@ -653,7 +609,7 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
 
 
     /***
-     * 授权
+     * 本机权限
      * @param requestCode
      * @param isAllGranted
      */
@@ -779,7 +735,6 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
                                 faceHelper.setName(requestId, getString(R.string.recognize_failed_notice, "陌生人"));
                                 retryRecognizeDelayed(requestId);
                                 Log.d("数据", "检测未通过");
-                                MyTTS.getInstance().speak("陌生人");
                                 checkUIDisplay(1);
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -792,7 +747,6 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
                     public void onError(Throwable e) {
                         faceHelper.setName(requestId, getString(R.string.recognize_failed_notice, "陌生人"));
                         retryRecognizeDelayed(requestId);
-                        MyTTS.getInstance().speak("陌生人");
                         checkUIDisplay(1);
                     }
 
@@ -942,7 +896,7 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
     @Override
     public void returnPwd(String password) {
 
-        String adminPwd = PreUtils.getString(RegisterAndRecognizeActivity.this, Constants.ADMIN_PASSWORD, "111111");
+        String adminPwd = PreUtils.getString(RegisterAndRecognizeActivity.this, Constants.ADMIN_PASSWORD, Constants.DEFAULT_PASSWORD_VALUE);
         if (password.equals(adminPwd)) {
             startActivity(new Intent(RegisterAndRecognizeActivity.this, SettingActivity.class));
             onDestroy();
