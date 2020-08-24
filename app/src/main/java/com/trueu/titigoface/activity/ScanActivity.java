@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.trueu.titigoface.R;
+import com.trueu.titigoface.common.Constants;
 import com.trueu.titigoface.util.MyTTS;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.callback.SimpleCallBack;
@@ -63,8 +64,8 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
      * @param json
      */
     public void executeResult(String json) {
-        EasyHttp.post("/visit/license/verify")
-                .baseUrl("http://192.168.0.110:8080")
+        EasyHttp.post(Constants.QRCODE_VERIFY)
+                .baseUrl(Constants.BASE_URL)
                 .upJson(json)
                 .execute(new SimpleCallBack<String>() {
                     @Override

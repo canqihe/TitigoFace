@@ -1,6 +1,9 @@
 package com.trueu.titigoface.util;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.View;
 import android.widget.Toast;
@@ -137,6 +140,7 @@ public class ShowUtils {
 
     /**
      * 截取某个字符之后
+     *
      * @param str
      * @return
      */
@@ -186,6 +190,47 @@ public class ShowUtils {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * 返回当前程序版本号
+     */
+    public static int getAppVersionCode(Context context) {
+        int versionCode = 0;
+        try {
+            // ---get the package info---
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+            versionCode = pi.versionCode;
+            if (versionCode == 0) {
+                return 0;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return versionCode;
+    }
+
+    /**
+     * 返回当前程序版本名
+     */
+    public static String getAppVersionName(Context context) {
+        String versionName = "";
+        try {
+            // ---get the package info---
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+            versionName = pi.versionName;
+            if (versionName == null) {
+                return "";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return versionName;
     }
 
 }

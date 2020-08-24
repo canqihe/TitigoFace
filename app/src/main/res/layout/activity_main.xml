@@ -3,13 +3,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/plotId_btn"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_below="@+id/rg_iptype"
+        android:layout_margin="16dp"
+        android:background="@color/colorPrimary"
+        android:text="提交"
+        android:textColor="@android:color/white"
+        android:textSize="18dp" />
+
+    <EditText
+        android:id="@+id/set_plotId"
+        android:layout_below="@+id/tx1"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:hint="输入单元ID"
+        android:inputType="number"
+        android:maxLength="4" />
+
+    <RadioGroup
+        android:id="@+id/rg_iptype"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/set_plotId"
+        android:layout_margin="16dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/neiwang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="内网"
+            android:textSize="20dp" />
+
+        <RadioButton
+            android:id="@+id/gongwang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:checked="true"
+            android:text="公网"
+            android:textSize="20dp" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tx1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:text="设备注册"
+        android:textColor="@color/colorAccent" />
+
     <Button
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerInParent="true"
         android:background="@color/main_color"
-        android:onClick="startengine"
         android:text="激活引擎"
+        android:id="@+id/startengine"
         android:textColor="@android:color/white"
         android:textSize="18dp" />
 

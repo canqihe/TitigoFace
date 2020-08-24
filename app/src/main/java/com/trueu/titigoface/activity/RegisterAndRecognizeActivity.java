@@ -17,6 +17,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
@@ -64,8 +65,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -122,7 +121,6 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
     private FaceHelper faceHelper;
     private List<CompareResult> compareResultList;
     private FaceSearchResultAdapter adapter;
-    private Timer timer;
     private EditText pwdEdtxt;
     /**
      * 活体检测的开关
@@ -177,6 +175,7 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
     private ImageView logoImg;
 
     private BottomSheetDialog bottomSheetDialog;
+    private int insertPwdFlag; //0设置 1退出
 
     private static final int ACTION_REQUEST_PERMISSIONS = 0x001;
     private int ledFlag = 0;
@@ -212,21 +211,12 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
         FaceServer.getInstance().init(this);
 
         initView();
-        //时间
-        timer = new Timer();
-        timer.schedule(new RemindTask(), 0, 1000);
 
         logoImg.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                PayPasswordView payPasswordView = new PayPasswordView(RegisterAndRecognizeActivity.this);
-                bottomSheetDialog = new BottomSheetDialog(RegisterAndRecognizeActivity.this);
-                bottomSheetDialog.setContentView(payPasswordView);
-                bottomSheetDialog.setCanceledOnTouchOutside(false);
-                bottomSheetDialog.show();
-                payPasswordView.setPwdOnclick(RegisterAndRecognizeActivity.this);
-
-                pwdEdtxt = payPasswordView.findViewById(R.id.passwordEdt);
+                insertPwdFlag = 0;
+                showPwdBoard();
                 return false;
             }
         });
@@ -238,7 +228,6 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
         //在布局结束后才做初始化操作
         previewView.getViewTreeObserver().addOnGlobalLayoutListener(this);
         logoImg = findViewById(R.id.logo_img);
-        timeTx = findViewById(R.id.timer);
         checkLayout = findViewById(R.id.check_layout);
         passTx = findViewById(R.id.pass_tx);
         faceRectView = findViewById(R.id.single_camera_face_rect_view);
@@ -270,6 +259,19 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
         onDestroy();
     }
 
+
+    /***
+     * 弹出密码框
+     */
+    public void showPwdBoard() {
+        PayPasswordView payPasswordView = new PayPasswordView(RegisterAndRecognizeActivity.this);
+        bottomSheetDialog = new BottomSheetDialog(RegisterAndRecognizeActivity.this);
+        bottomSheetDialog.setContentView(payPasswordView);
+        bottomSheetDialog.setCanceledOnTouchOutside(false);
+        bottomSheetDialog.show();
+        payPasswordView.setPwdOnclick(RegisterAndRecognizeActivity.this);
+        pwdEdtxt = payPasswordView.findViewById(R.id.passwordEdt);
+    }
 
     /**
      * 初始化引擎
@@ -895,23 +897,26 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
 
     @Override
     public void returnPwd(String password) {
-
         String adminPwd = PreUtils.getString(RegisterAndRecognizeActivity.this, Constants.ADMIN_PASSWORD, Constants.DEFAULT_PASSWORD_VALUE);
         if (password.equals(adminPwd)) {
-            startActivity(new Intent(RegisterAndRecognizeActivity.this, SettingActivity.class));
-            onDestroy();
-        } else Toast.makeText(RegisterAndRecognizeActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
-
+            if (insertPwdFlag == 0) {
+                startActivity(new Intent(RegisterAndRecognizeActivity.this, SettingActivity.class));
+                onDestroy();
+            } else {
+                RegisterAndRecognizeActivity.this.finish();
+            }
+        } else
+            Toast.makeText(RegisterAndRecognizeActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
     }
 
-    class RemindTask extends TimerTask {
-        public void run() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    timeTx.setText(ShowUtils.getDate() + " " + ShowUtils.getTime());
-                }
-            });
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            insertPwdFlag = 1;
+            showPwdBoard();
+            return true;
         }
+        return super.onKeyDown(keyCode, event);
     }
 }

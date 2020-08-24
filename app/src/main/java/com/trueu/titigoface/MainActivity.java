@@ -1,12 +1,20 @@
 package com.trueu.titigoface;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.arcsoft.face.ActiveFileInfo;
 import com.arcsoft.face.ErrorInfo;
@@ -16,12 +24,25 @@ import com.arcsoft.face.enums.RuntimeABI;
 import com.trueu.titigoface.activity.BaseActivity;
 import com.trueu.titigoface.activity.RegisterAndRecognizeActivity;
 import com.trueu.titigoface.common.Constants;
+import com.trueu.titigoface.model.DeviceResInfo;
 import com.trueu.titigoface.util.ConfigUtil;
+import com.trueu.titigoface.util.MD5Utils;
+import com.trueu.titigoface.util.NetWorkUtils;
+import com.trueu.titigoface.util.PreUtils;
+import com.zhouyou.http.EasyHttp;
+import com.zhouyou.http.callback.SimpleCallBack;
+import com.zhouyou.http.exception.ApiException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -29,11 +50,28 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.arcsoft.face.enums.DetectFaceOrientPriority.ASF_OP_0_ONLY;
 import static com.arcsoft.face.enums.DetectFaceOrientPriority.ASF_OP_ALL_OUT;
 
 public class MainActivity extends BaseActivity {
+
+    @BindView(R.id.startengine)
+    Button startEngine;
+    @BindView(R.id.plotId_btn)
+    Button plotIdBtn;
+    @BindView(R.id.set_plotId)
+    EditText setPlotId;
+    @BindView(R.id.neiwang)
+    RadioButton neiwang;
+    @BindView(R.id.gongwang)
+    RadioButton gongwang;
+    @BindView(R.id.rg_iptype)
+    RadioGroup radioGroup;
+
+    private int ipType = 20;  //10内网 20公网
+    private String resultMsg = "null";
+    private int resultCode;
 
     private static final int ACTION_REQUEST_PERMISSIONS = 0x001;
     private static final String[] NEEDED_PERMISSIONS = new String[]{Manifest.permission.READ_PHONE_STATE};
@@ -51,6 +89,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         libraryExists = checkSoFile(LIBRARIES);
         ApplicationInfo applicationInfo = getApplicationInfo();
         Log.i("数据", "onCreate: " + applicationInfo.nativeLibraryDir);
@@ -62,9 +101,38 @@ public class MainActivity extends BaseActivity {
             Log.i("数据", "onCreate: getVersion, code is: " + code + ", versionInfo is: " + versionInfo);
         }
 
-        startengine();
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch (checkedId) {
+                    case R.id.neiwang:
+                        ipType = 10;
+                        break;
+                    case R.id.gongwang:
+                        ipType = 20;
+                        break;
+                }
+            }
+        });
+
     }
 
+
+    @OnClick({R.id.plotId_btn, R.id.startengine})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.plotId_btn:
+
+                if (!TextUtils.isEmpty(setPlotId.getText())) {
+                    deviceController();
+                } else Toast.makeText(MainActivity.this, "请输入单元ID", Toast.LENGTH_SHORT).show();
+
+                break;
+            case R.id.startengine:
+                startengine();
+                break;
+        }
+    }
 
     /***
      * 激活引擎
@@ -136,6 +204,63 @@ public class MainActivity extends BaseActivity {
                     }
                 });
     }
+
+
+    /***
+     * 设备注册
+     */
+    public void deviceController() {
+        DeviceResInfo deviceResInfo = DeviceResInfo.getInstance();
+        deviceResInfo.setIpAddr(NetWorkUtils.getIpAddress(this));
+        deviceResInfo.setIpType(ipType);
+        deviceResInfo.setMac(MD5Utils.getMD5(NetWorkUtils.getMacAddressFromIp(this)));
+        deviceResInfo.setPlotDetailId(Integer.parseInt(setPlotId.getText().toString()));
+
+        PreUtils.setInt(MainActivity.this, Constants.PLOT_ID, Integer.parseInt(setPlotId.getText().toString().trim()));
+
+        Log.d("数据", "IP地址：" + NetWorkUtils.getIpAddress(this)
+                + "\nMAC地址：" + MD5Utils.getMD5(NetWorkUtils.getMacAddressFromIp(this))
+                + "\nipType：" + ipType
+                + "\nPlotId：" + Integer.parseInt(setPlotId.getText().toString()));
+
+        EasyHttp
+                .post(Constants.DEVICE_CONTROLLER)
+                .baseUrl(Constants.BASE_URL)
+                .upObject(deviceResInfo)
+                .addConverterFactory(GsonConverterFactory.create())
+                .execute(new SimpleCallBack<String>() {
+                    @Override
+                    public void onError(ApiException e) {
+                        Log.d("数据：访问异常：", e.toString());
+                        Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onSuccess(String result) {
+                        Log.d("数据：成功", result);
+                        try {
+                            JSONObject jsonObject = new JSONObject(result);
+                            resultCode = jsonObject.optInt("resultCode");
+                            if (resultCode == 0) resultMsg = "单元ID设置成功!";
+                            else
+                                resultMsg = jsonObject.optString("errorMsg");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage(resultMsg);
+                        builder.setPositiveButton("关闭", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.show();
+                    }
+                });
+    }
+
 
     @Override
     protected void afterRequestPermission(int requestCode, boolean isAllGranted) {
