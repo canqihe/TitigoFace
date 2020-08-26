@@ -9,18 +9,15 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 
-import com.trueu.titigoface.MainActivity;
 import com.trueu.titigoface.R;
 import com.trueu.titigoface.common.Constants;
-import com.trueu.titigoface.faceserver.FaceServer;
-import com.trueu.titigoface.util.ShowUtils;
+import com.trueu.titigoface.util.GeneralUtils;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.callback.DownloadProgressCallBack;
 import com.zhouyou.http.callback.SimpleCallBack;
@@ -50,8 +47,10 @@ public class SettingActivity extends BaseActivity {
     TextView pwdBtn;
     @BindView(R.id.check_upgrade)
     TextView checkUpgrade;
+    @BindView(R.id.version_tx)
+    TextView versionTx;
     @BindView(R.id.feedback_btn)
-    TextView feedBackBtn;
+    TextView feedbackBtn;
 
     private ProgressDialog dialog;
 
@@ -62,12 +61,13 @@ public class SettingActivity extends BaseActivity {
         ButterKnife.bind(this);
         dialog = new ProgressDialog(this);
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        dialog.setMessage("正在下载...");
+        dialog.setMessage("正在下载更新，请勿直接退出...");
         dialog.setIcon(R.drawable.ic_baseline_cloud_download_24);
-        // 设置提示的title的图标，默认是没有的，如果没有设置title的话只设置Icon是不会显示图标的
         dialog.setTitle("更新");
         dialog.setMax(100);
         dialog.setCancelable(false);
+
+        versionTx.setText("© 和诚科技 v" + GeneralUtils.getAppVersionName(this));
 
     }
 
@@ -115,7 +115,7 @@ public class SettingActivity extends BaseActivity {
                 .connectTimeout(30 * 1000)
                 .params("clientType", "20")
                 .params("type", "10")
-                .params("appVersion", String.valueOf(ShowUtils.getAppVersionCode(SettingActivity.this)))
+                .params("appVersion", String.valueOf(GeneralUtils.getAppVersionCode(SettingActivity.this)))
                 .addConverterFactory(GsonConverterFactory.create())
                 .timeStamp(true)
                 .execute(new SimpleCallBack<String>() {

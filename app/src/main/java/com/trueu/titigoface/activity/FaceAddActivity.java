@@ -28,7 +28,7 @@ import com.trueu.titigoface.database.UserEntity;
 import com.trueu.titigoface.faceserver.FaceServer;
 import com.trueu.titigoface.util.CustomScheculers;
 import com.trueu.titigoface.util.GlideImageLoader;
-import com.trueu.titigoface.util.ShowUtils;
+import com.trueu.titigoface.util.GeneralUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -127,7 +127,7 @@ public class FaceAddActivity extends AppCompatActivity {
                 boolean success = FaceServer.getInstance().registerBgr24(FaceAddActivity.this, bgr24, bitmap.getWidth(), bitmap.getHeight(),
                         no + "_" + name);
                 if (!success) {
-                    ShowUtils.showToast(FaceAddActivity.this, "注册失败");
+                    GeneralUtils.showToast(FaceAddActivity.this, "注册失败");
                 } else {
                     addPerson(name, no, address);
                 }
@@ -141,7 +141,7 @@ public class FaceAddActivity extends AppCompatActivity {
     public void addPerson(String userName, String userNo, String userAddress) {
 
         UserEntity userEntity = new UserEntity();
-        userEntity.setAddTime(ShowUtils.getYMD() + " " + ShowUtils.getTime());
+        userEntity.setAddTime(GeneralUtils.getYMD() + " " + GeneralUtils.getTime());
         userEntity.setUserName(userName);
         userEntity.setUserNo(userNo);
         userEntity.setUserAddress(userAddress);

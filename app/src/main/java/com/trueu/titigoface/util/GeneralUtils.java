@@ -22,7 +22,7 @@ import java.util.Locale;
  * E-mail: hecanqi168@gmail.com
  * Copyright (C) 2018 SSZB, Inc.
  */
-public class ShowUtils {
+public class GeneralUtils {
 
     public static void showToast(final Activity activity, final String stringTx) {
         activity.runOnUiThread(new Runnable() {

@@ -48,7 +48,7 @@ import com.trueu.titigoface.util.ConfigUtil;
 import com.trueu.titigoface.util.DrawHelper;
 import com.trueu.titigoface.util.MyTTS;
 import com.trueu.titigoface.util.PreUtils;
-import com.trueu.titigoface.util.ShowUtils;
+import com.trueu.titigoface.util.GeneralUtils;
 import com.trueu.titigoface.util.camera.CameraHelper;
 import com.trueu.titigoface.util.camera.CameraListener;
 import com.trueu.titigoface.util.face.FaceHelper;
@@ -727,7 +727,7 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
                             requestFeatureStatusMap.put(requestId, RequestFeatureStatus.SUCCEED);
 //                            faceHelper.setName(requestId, getString(R.string.recognize_success_notice, compareResult.getUserName()));
 
-                            MyTTS.getInstance().speak("通过 " + ShowUtils.subStringEnd(compareResult.getUserName(), "_"));
+                            MyTTS.getInstance().speak("通过 " + GeneralUtils.subStringEnd(compareResult.getUserName(), "_"));
                             checkUIDisplay(0);
 
                             Log.d("数据", "检测通过");
@@ -912,7 +912,7 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN || keyCode == KeyEvent.KEYCODE_MENU) {
             insertPwdFlag = 1;
             showPwdBoard();
             return true;

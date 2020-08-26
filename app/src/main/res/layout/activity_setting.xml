@@ -103,14 +103,16 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"/>
 
-
     <TextView
         android:layout_width="wrap_content"
+        android:id="@+id/version_tx"
         android:textColor="#999999"
+        android:gravity="bottom"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginTop="16dp"
-        android:text="© 广州和诚科技"
-        android:layout_height="wrap_content"/>
+        android:text="© 和诚科技 v1.0.0"
+        android:paddingBottom="12dp"
+        android:layout_height="match_parent"/>
 
 
 </LinearLayout>

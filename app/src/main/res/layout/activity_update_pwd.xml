@@ -10,24 +10,24 @@
 
 
     <EditText
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginLeft="22dp"
         android:id="@+id/old_pwd"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:maxLines="1"
         android:maxLength="6"
         android:inputType="numberPassword"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="22dp"
         android:hint="旧密码" />
 
     <EditText
         android:id="@+id/new_pwd"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginLeft="22dp"
         android:inputType="numberPassword"
         android:maxLength="6"
         android:maxLines="1"
@@ -38,20 +38,20 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:maxLength="6"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginLeft="22dp"
         android:maxLines="1"
         android:inputType="numberPassword"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="22dp"
         android:hint="确认新密码" />
 
     <Button
         android:id="@+id/submit_update"
         android:layout_width="match_parent"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginLeft="22dp"
         android:background="@color/main_color"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="22dp"
         android:textSize="18dp"
         android:text="提交"
         android:textColor="@android:color/white"

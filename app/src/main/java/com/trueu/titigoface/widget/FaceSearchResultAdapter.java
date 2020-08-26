@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.trueu.titigoface.R;
 import com.trueu.titigoface.faceserver.CompareResult;
 import com.trueu.titigoface.faceserver.FaceServer;
-import com.trueu.titigoface.util.ShowUtils;
+import com.trueu.titigoface.util.GeneralUtils;
 
 import java.io.File;
 import java.util.List;
@@ -49,7 +49,7 @@ public class FaceSearchResultAdapter extends RecyclerView.Adapter<FaceSearchResu
         String name = compareResultList.get(position).getUserName();
         Log.d("数据，名字", name);
 
-        holder.textView.setText(ShowUtils.subStringEnd(name, "_"));
+        holder.textView.setText(GeneralUtils.subStringEnd(name, "_"));
     }
 
     @Override

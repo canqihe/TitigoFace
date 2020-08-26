@@ -10,10 +10,19 @@ import android.widget.TextView;
 
 import com.trueu.titigoface.R;
 import com.trueu.titigoface.common.Constants;
+import com.trueu.titigoface.util.GeneralUtils;
+import com.trueu.titigoface.util.MD5Utils;
 import com.trueu.titigoface.util.MyTTS;
+import com.trueu.titigoface.util.NetWorkUtils;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.exception.ApiException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +64,20 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
     public void onScanQRCodeSuccess(String result) {
         Log.d("数据，扫码结果", result);
         MyTTS.getInstance().speak("正在处理");
-        executeResult(result);
+        try {
+            JSONObject obj = new JSONObject(result);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("mac", MD5Utils.getMD5(NetWorkUtils.getMacAddressFromIp(ScanActivity.this)));
+            jsonObject.put("plotDetailId", obj.optInt("plotDetailId"));
+            jsonObject.put("startTime", obj.optLong("startTime"));
+            jsonObject.put("type", obj.optInt("type"));
+            jsonObject.put("userId", obj.optInt("userId"));
+
+            Log.d("数据，扫码Json转换结果", jsonObject.toString());
+            executeResult(jsonObject.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -70,12 +92,12 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
                 .execute(new SimpleCallBack<String>() {
                     @Override
                     public void onError(ApiException e) {
-                        Log.d("数据，扫码处理结果", e.toString());
+                        Log.d("数据，扫码接口发生错误", e.toString());
                     }
 
                     @Override
                     public void onSuccess(String s) {
-                        Log.d("数据，扫码处理结果", s);
+                        Log.d("数据，扫码网络处理结果", s);
                         ScanActivity.this.finish();
                     }
                 });

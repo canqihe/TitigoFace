@@ -5,7 +5,7 @@ public class Constants {
     public static final String APP_ID = "g5P9cLkePoHV4qLZsMgpzfu1s1VqasZqGTK5e5pSNNK";
     public static final String SDK_KEY = "42CAmasKepAL4JkwmHC4shT6QL6GrFznY7jBBdRJoAgA";
     public static final String ADMIN_PASSWORD = "admin_password";
-    public static final String DEFAULT_PASSWORD_VALUE = "111111";
+    public static final String DEFAULT_PASSWORD_VALUE = "111111";//默认密码
     public static String PLOT_ID = "PLOT_ID";
 
 
