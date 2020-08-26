@@ -136,7 +136,7 @@ public class SettingActivity extends BaseActivity {
                                     String desc = jsonObject1.optString("description");
                                     new AlertDialog.Builder(SettingActivity.this).setTitle("发现新版本")
                                             .setIcon(R.drawable.ic_baseline_system_update_24)
-                                            .setMessage(desc).setPositiveButton("更新", new DialogInterface.OnClickListener() {
+                                            .setMessage(desc).setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             onDownloadApk(apkUrl);

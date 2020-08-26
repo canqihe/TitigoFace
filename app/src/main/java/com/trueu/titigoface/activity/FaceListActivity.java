@@ -68,7 +68,7 @@ public class FaceListActivity extends AppCompatActivity {
 
         FaceServer.getInstance().init(FaceListActivity.this);//初始化人脸库
 
-        requestDatabase();
+        requestDatabase(0, 20);
 
         //输入框监听 自动搜素
         userSearchEdit.addTextChangedListener(new TextWatcher() {
@@ -81,7 +81,7 @@ public class FaceListActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 try {
                     if (charSequence.length() == 0) {
-                        requestDatabase();
+                        requestDatabase(0, 20);
                     } else if (charSequence.length() >= 4) {
                         selectByNo(userSearchEdit.getText().toString().trim());
                     }
@@ -104,7 +104,7 @@ public class FaceListActivity extends AppCompatActivity {
                 this.finish();
                 break;
             case R.id.search_btn:
-                if (userSearchEdit.getText().toString().trim().isEmpty()) requestDatabase();
+                if (userSearchEdit.getText().toString().trim().isEmpty()) requestDatabase(0, 20);
                 else
                     selectByNo(userSearchEdit.getText().toString().trim());
                 break;
@@ -113,13 +113,15 @@ public class FaceListActivity extends AppCompatActivity {
 
     /***
      * 查询数据库人脸数据
+     * @param page 页数
+     * @param rows 条数
      */
-    public void requestDatabase() {
+    public void requestDatabase(final int page, final int rows) {
 
         Observable.create(new ObservableOnSubscribe<List<UserEntity>>() {
             @Override
             public void subscribe(ObservableEmitter<List<UserEntity>> list) {
-                List<UserEntity> userEntities = AppDatabase.getDatabase(FaceListActivity.this).userDao().selectAll();
+                List<UserEntity> userEntities = AppDatabase.getDatabase(FaceListActivity.this).userDao().selectByPageRows(page, rows);
                 list.onNext(userEntities);
             }
         }).subscribeOn(Schedulers.io())
@@ -131,8 +133,21 @@ public class FaceListActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(final List<UserEntity> userEntities) {
-                        toolbarTitle.setText("人脸列表 (" + userEntities.size() + "人)");
                         refreshData(userEntities);
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final long personCount = AppDatabase.getDatabase(FaceListActivity.this).userDao().count();
+                                FaceListActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        toolbarTitle.setText("人脸列表 (" + personCount + "人)");
+                                    }
+                                });
+                            }
+                        }).start();
+
                     }
 
                     @Override

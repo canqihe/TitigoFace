@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.trueu.titigoface.R;
 import com.trueu.titigoface.common.Constants;
-import com.trueu.titigoface.util.GeneralUtils;
 import com.trueu.titigoface.util.MD5Utils;
 import com.trueu.titigoface.util.MyTTS;
 import com.trueu.titigoface.util.NetWorkUtils;
@@ -20,9 +19,6 @@ import com.zhouyou.http.exception.ApiException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,8 +45,6 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
 
         toolbarTitle.setText("扫描二维码");
 
-        MyTTS.getInstance().init(ScanActivity.this);//初始化语音
-
     }
 
     @Override
@@ -63,7 +57,6 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
     @Override
     public void onScanQRCodeSuccess(String result) {
         Log.d("数据，扫码结果", result);
-        MyTTS.getInstance().speak("正在处理");
         try {
             JSONObject obj = new JSONObject(result);
             JSONObject jsonObject = new JSONObject();
@@ -73,7 +66,6 @@ public class ScanActivity extends AppCompatActivity implements QRCodeView.Delega
             jsonObject.put("type", obj.optInt("type"));
             jsonObject.put("userId", obj.optInt("userId"));
 
-            Log.d("数据，扫码Json转换结果", jsonObject.toString());
             executeResult(jsonObject.toString());
         } catch (JSONException e) {
             e.printStackTrace();
