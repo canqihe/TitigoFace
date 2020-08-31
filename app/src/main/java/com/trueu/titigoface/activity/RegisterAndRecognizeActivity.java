@@ -47,6 +47,7 @@ import com.trueu.titigoface.model.FacePreviewInfo;
 import com.trueu.titigoface.util.ConfigUtil;
 import com.trueu.titigoface.util.DrawHelper;
 import com.trueu.titigoface.util.MyTTS;
+import com.trueu.titigoface.util.NetWorkUtils;
 import com.trueu.titigoface.util.PreUtils;
 import com.trueu.titigoface.util.GeneralUtils;
 import com.trueu.titigoface.util.camera.CameraHelper;
@@ -68,6 +69,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -247,6 +249,7 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
         int spanCount = (int) (dm.widthPixels / (getResources().getDisplayMetrics().density * 100 + 0.5f));
         recyclerShowFaceInfo.setLayoutManager(new GridLayoutManager(this, spanCount));
         recyclerShowFaceInfo.setItemAnimator(new DefaultItemAnimator());
+
     }
 
 

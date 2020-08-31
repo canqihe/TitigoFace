@@ -31,6 +31,7 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SettingActivity extends BaseActivity {

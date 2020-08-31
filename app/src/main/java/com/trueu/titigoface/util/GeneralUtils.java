@@ -69,7 +69,7 @@ public class GeneralUtils {
      * @return
      */
     public static String getTime() {
-        return new SimpleDateFormat("HH:mm:ss", Locale.CHINA).format(new Date());
+        return new SimpleDateFormat("HH:mm", Locale.CHINA).format(new Date());
     }
 
     /***

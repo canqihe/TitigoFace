@@ -5,6 +5,8 @@ import android.app.Application;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.cache.converter.SerializableDiskConverter;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by Colin
  * on 2020/8/20
@@ -28,6 +30,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
 
         EasyHttp.init(this);
         EasyHttp.getInstance()

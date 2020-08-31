@@ -27,8 +27,8 @@ import com.trueu.titigoface.database.AppDatabase;
 import com.trueu.titigoface.database.UserEntity;
 import com.trueu.titigoface.faceserver.FaceServer;
 import com.trueu.titigoface.util.CustomScheculers;
-import com.trueu.titigoface.util.GlideImageLoader;
 import com.trueu.titigoface.util.GeneralUtils;
+import com.trueu.titigoface.util.GlideImageLoader;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,6 +38,7 @@ import java.util.concurrent.Executors;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DefaultObserver;

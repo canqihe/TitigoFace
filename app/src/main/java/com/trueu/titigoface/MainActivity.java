@@ -43,6 +43,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -217,6 +218,10 @@ public class MainActivity extends BaseActivity {
         deviceResInfo.setPlotDetailId(Integer.parseInt(setPlotId.getText().toString()));
 
         PreUtils.setInt(MainActivity.this, Constants.PLOT_ID, Integer.parseInt(setPlotId.getText().toString().trim()));
+
+
+        //设置推送别名
+        JPushInterface.setAlias(MainActivity.this, 1, MD5Utils.getMD5(NetWorkUtils.getMacAddressFromIp(this)));
 
         Log.d("数据", "IP地址：" + NetWorkUtils.getIpAddress(this)
                 + "\nMAC地址：" + MD5Utils.getMD5(NetWorkUtils.getMacAddressFromIp(this))
