@@ -159,8 +159,7 @@ public class MainActivity extends BaseActivity {
                 Log.i("数据，激活引擎", "subscribe cost: " + (System.currentTimeMillis() - start));
                 emitter.onNext(activeCode);
             }
-        })
-                .subscribeOn(Schedulers.io())
+        }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
                     @Override
@@ -216,17 +215,15 @@ public class MainActivity extends BaseActivity {
         deviceResInfo.setIpType(ipType);
         deviceResInfo.setMac(MD5Utils.getMD5(NetWorkUtils.getMacAddressFromIp(this)));
         deviceResInfo.setPlotDetailId(Integer.parseInt(setPlotId.getText().toString()));
+        deviceResInfo.setRegId(JPushInterface.getRegistrationID(this));
 
         PreUtils.setInt(MainActivity.this, Constants.PLOT_ID, Integer.parseInt(setPlotId.getText().toString().trim()));
-
-
-        //设置推送别名
-        JPushInterface.setAlias(MainActivity.this, 1, MD5Utils.getMD5(NetWorkUtils.getMacAddressFromIp(this)));
 
         Log.d("数据", "IP地址：" + NetWorkUtils.getIpAddress(this)
                 + "\nMAC地址：" + MD5Utils.getMD5(NetWorkUtils.getMacAddressFromIp(this))
                 + "\nipType：" + ipType
-                + "\nPlotId：" + Integer.parseInt(setPlotId.getText().toString()));
+                + "\nPlotId：" + Integer.parseInt(setPlotId.getText().toString())
+                + "\ngetRegistrationID：" + JPushInterface.getRegistrationID(this));
 
         EasyHttp
                 .post(Constants.DEVICE_CONTROLLER)

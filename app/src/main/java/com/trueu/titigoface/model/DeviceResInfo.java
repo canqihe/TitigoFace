@@ -10,6 +10,16 @@ public class DeviceResInfo {
     public int ipType;
     public String mac;
     public int plotDetailId;
+    public String regId;
+
+    public String getRegId() {
+        return regId;
+    }
+
+    public void setRegId(String regId) {
+        this.regId = regId;
+    }
+
     private static volatile DeviceResInfo deviceResInfo;
 
 

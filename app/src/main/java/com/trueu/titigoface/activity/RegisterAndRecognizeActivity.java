@@ -37,6 +37,7 @@ import com.arcsoft.face.GenderInfo;
 import com.arcsoft.face.LivenessInfo;
 import com.arcsoft.face.enums.DetectFaceOrientPriority;
 import com.arcsoft.face.enums.DetectMode;
+import com.baidu.aip.bodyanalysis.AipBodyAnalysis;
 import com.common.pos.api.util.PosUtil;
 import com.trueu.titigoface.R;
 import com.trueu.titigoface.common.Constants;
@@ -46,10 +47,9 @@ import com.trueu.titigoface.model.DrawInfo;
 import com.trueu.titigoface.model.FacePreviewInfo;
 import com.trueu.titigoface.util.ConfigUtil;
 import com.trueu.titigoface.util.DrawHelper;
-import com.trueu.titigoface.util.MyTTS;
-import com.trueu.titigoface.util.NetWorkUtils;
-import com.trueu.titigoface.util.PreUtils;
 import com.trueu.titigoface.util.GeneralUtils;
+import com.trueu.titigoface.util.MyTTS;
+import com.trueu.titigoface.util.PreUtils;
 import com.trueu.titigoface.util.camera.CameraHelper;
 import com.trueu.titigoface.util.camera.CameraListener;
 import com.trueu.titigoface.util.face.FaceHelper;
@@ -62,14 +62,16 @@ import com.trueu.titigoface.weight.PayPasswordView;
 import com.trueu.titigoface.widget.FaceRectView;
 import com.trueu.titigoface.widget.FaceSearchResultAdapter;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -173,7 +175,7 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
     private Switch switchLivenessDetect;
 
     private RelativeLayout checkLayout;
-    private TextView passTx, timeTx;
+    private TextView passTx;
     private ImageView logoImg;
 
     private BottomSheetDialog bottomSheetDialog;
@@ -193,6 +195,14 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
             Manifest.permission.READ_PHONE_STATE
 
     };
+
+    //设置APPID/AK/SK
+    public static final String APP_ID = "22573923";
+    public static final String API_KEY = "YrtblaYIfeiCBInuBYaDa5r8";
+    public static final String SECRET_KEY = "DS4coFS2OIqTfKYB7hLYYVvgPNf8jbm8";
+    AipBodyAnalysis client;
+    private ExecutorService executorService;
+    private ByteArrayOutputStream baos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,6 +233,9 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
             }
         });
 
+        // 初始化一个AipBodyAnalysis
+        client = new AipBodyAnalysis(APP_ID, API_KEY, SECRET_KEY);
+        executorService = Executors.newSingleThreadExecutor();
     }
 
     private void initView() {
@@ -506,16 +519,40 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
 
 
             @Override
-            public void onPreview(final byte[] nv21, Camera camera) {
+            public void onPreview(final byte[] nv21, final Camera camera) {
+
+                /*executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Camera.Size size = camera.getParameters().getPreviewSize();
+                            YuvImage yuvImage = new YuvImage(nv21, ImageFormat.NV21, size.width, size.height, null);
+
+                            if (yuvImage != null) {
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                yuvImage.compressToJpeg(new Rect(0, 0, size.width, size.height), 80, baos);
+//                                Bitmap bitmap = BitmapFactory.decodeByteArray(baos.toByteArray(), 0, baos.size());
+
+                                JSONObject res = client.bodyAttr(baos.toByteArray(), null);//内存溢出OOM 未解决
+                                Log.e("百度人体检测", res.toString());
+                            }
+                            yuvImage = null;
+                            baos = null;
+                        } catch (Exception e) {
+                            Log.e("百度人体检测-报错", e.toString());
+                        }
+
+                    }
+                });*/
+
                 if (faceRectView != null) {
                     faceRectView.clearFaceInfo();
                 }
                 List<FacePreviewInfo> facePreviewInfoList = faceHelper.onPreviewFrame(nv21);
                 if (facePreviewInfoList != null && faceRectView != null && drawHelper != null) {
-                    drawPreviewInfo(facePreviewInfoList);
+//                    drawPreviewInfo(facePreviewInfoList);
                 }
                 clearLeftFace(facePreviewInfoList);
-
                 if (facePreviewInfoList != null && facePreviewInfoList.size() > 0 && previewSize != null) {
                     for (int i = 0; i < facePreviewInfoList.size(); i++) {
                         Integer status = requestFeatureStatusMap.get(facePreviewInfoList.get(i).getTrackId());
@@ -524,8 +561,7 @@ public class RegisterAndRecognizeActivity extends BaseActivity implements ViewTr
                          */
                         if (livenessDetect && (status == null || status != RequestFeatureStatus.SUCCEED)) {
                             Integer liveness = livenessMap.get(facePreviewInfoList.get(i).getTrackId());
-                            if (liveness == null
-                                    || (liveness != LivenessInfo.ALIVE && liveness != LivenessInfo.NOT_ALIVE && liveness != RequestLivenessStatus.ANALYZING)) {
+                            if (liveness == null || (liveness != LivenessInfo.ALIVE && liveness != LivenessInfo.NOT_ALIVE && liveness != RequestLivenessStatus.ANALYZING)) {
                                 livenessMap.put(facePreviewInfoList.get(i).getTrackId(), RequestLivenessStatus.ANALYZING);
                                 faceHelper.requestFaceLiveness(nv21, facePreviewInfoList.get(i).getFaceInfo(), previewSize.width, previewSize.height, FaceEngine.CP_PAF_NV21, facePreviewInfoList.get(i).getTrackId(), LivenessType.RGB);
                             }

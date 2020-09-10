@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-
 import com.trueu.titigoface.R;
 import com.trueu.titigoface.common.Constants;
 import com.trueu.titigoface.util.GeneralUtils;
@@ -31,7 +30,6 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SettingActivity extends BaseActivity {
@@ -132,7 +130,7 @@ public class SettingActivity extends BaseActivity {
                             try {
                                 JSONObject jsonObject = new JSONObject(result);
                                 if (jsonObject.optInt("resultCode") == 0) {
-                                    JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                                    JSONObject jsonObject1 = jsonObject.optJSONObject("data");
                                     final String apkUrl = jsonObject1.optString("appUrl");
                                     String desc = jsonObject1.optString("description");
                                     new AlertDialog.Builder(SettingActivity.this).setTitle("发现新版本")
