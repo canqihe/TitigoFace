@@ -4,12 +4,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -219,18 +227,56 @@ public class GeneralUtils {
     public static String getAppVersionName(Context context) {
         String versionName = "";
         try {
-            // ---get the package info---
             PackageManager pm = context.getPackageManager();
             PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
             versionName = pi.versionName;
             if (versionName == null) {
-                return "";
+                return "0";
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         return versionName;
+    }
+
+    /**
+     * 根据图片的url路径获得Bitmap对象
+     *
+     * @param src
+     * @return
+     */
+    public static Bitmap returnBitmap(String src) {
+        try {
+            Log.d("数据FileUtil", src);
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+
+            //设置固定大小
+            //需要的大小
+            float newWidth = 200f;
+            float newHeigth = 200f;
+
+            //图片大小
+            int width = myBitmap.getWidth();
+            int height = myBitmap.getHeight();
+
+            //缩放比例
+            float scaleWidth = newWidth / width;
+            float scaleHeigth = newHeigth / height;
+            Matrix matrix = new Matrix();
+            matrix.postScale(scaleWidth, scaleHeigth);
+
+            Bitmap bitmap = Bitmap.createBitmap(myBitmap, 0, 0, width, height, matrix, true);
+            return bitmap;
+        } catch (IOException e) {
+            Log.e("数据returnBitmap", e.toString());
+            return null;
+        }
+
     }
 
 }

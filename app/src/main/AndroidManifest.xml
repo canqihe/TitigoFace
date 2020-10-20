@@ -31,7 +31,7 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.SettingActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask" />
         <activity
             android:name=".activity.RegisterAndRecognizeActivity"
             android:configChanges="orientation|screenSize"
@@ -90,12 +90,6 @@
             </intent-filter>
         </receiver>
 
-        <!-- User defined.  For test only  用户自定义的广播接收器-->
-
-        <!-- Required since 3.0.7 -->
-        <!-- 新的 tag/alias 接口结果返回需要开发者配置一个自定的广播 -->
-        <!-- 3.3.0开始所有事件将通过该类回调 -->
-        <!-- 该广播需要继承 JPush 提供的 JPushMessageReceiver 类, 并如下新增一个 Intent-Filter -->
         <receiver
             android:name=".faceserver.PushMessageReceiver"
             android:enabled="true"
@@ -105,6 +99,16 @@
                 <category android:name="com.trueu.titigoface" />
             </intent-filter>
         </receiver>
+
+        <!-- User defined.  For test only  用户自定义的广播接收器-->
+
+        <!-- Required since 3.0.7 -->
+        <!-- 新的 tag/alias 接口结果返回需要开发者配置一个自定的广播 -->
+        <!-- 3.3.0开始所有事件将通过该类回调 -->
+        <!-- 该广播需要继承 JPush 提供的 JPushMessageReceiver 类, 并如下新增一个 Intent-Filter -->
+        <service
+            android:name=".faceserver.PushRegServices"
+            tools:ignore="Instantiatable" />
 
     </application>
 

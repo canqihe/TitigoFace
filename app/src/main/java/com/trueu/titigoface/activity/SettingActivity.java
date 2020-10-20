@@ -32,6 +32,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.trueu.titigoface.common.Constants.MSG_REG_STR;
+
 public class SettingActivity extends BaseActivity {
 
     @BindView(R.id.back_icon)
@@ -78,7 +80,7 @@ public class SettingActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.reg_btn:
-                startActivity(new Intent(SettingActivity.this, FaceAddActivity.class));
+                startActivity(new Intent(SettingActivity.this, FaceAddActivity.class).putExtra(MSG_REG_STR, "none"));
                 break;
             case R.id.list_btn:
                 startActivity(new Intent(SettingActivity.this, FaceListActivity.class));
@@ -92,7 +94,7 @@ public class SettingActivity extends BaseActivity {
             case R.id.feedback_btn:
                 new AlertDialog.Builder(SettingActivity.this).setTitle("联系我们")
                         .setMessage("邮件\ntitigo@services.com\n\n致电\n0731-84282827")
-                        .setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("关闭", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                             }

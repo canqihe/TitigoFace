@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -19,6 +20,9 @@ import android.widget.Toast;
 
 import com.arcsoft.imageutil.ArcSoftImageFormat;
 import com.arcsoft.imageutil.ArcSoftImageUtil;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -29,6 +33,9 @@ import com.trueu.titigoface.faceserver.FaceServer;
 import com.trueu.titigoface.util.CustomScheculers;
 import com.trueu.titigoface.util.GeneralUtils;
 import com.trueu.titigoface.util.GlideImageLoader;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,6 +48,8 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DefaultObserver;
+
+import static com.trueu.titigoface.common.Constants.MSG_REG_STR;
 
 public class FaceAddActivity extends AppCompatActivity {
 
@@ -85,9 +94,6 @@ public class FaceAddActivity extends AppCompatActivity {
 
         toolbarTitle.setText("人脸注册");
 
-        executorService = Executors.newSingleThreadExecutor();
-
-        FaceServer.getInstance().init(this);//初始化引擎
     }
 
 
@@ -118,6 +124,10 @@ public class FaceAddActivity extends AppCompatActivity {
      * @param no
      */
     private void doRegister(final String name, final String no, final String address) {
+
+        executorService = Executors.newSingleThreadExecutor();
+        FaceServer.getInstance().init(this);//初始化引擎
+
         executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -160,6 +170,7 @@ public class FaceAddActivity extends AppCompatActivity {
                     @Override
                     public void onNext(Long aLong) {
                         Toast.makeText(FaceAddActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                        Log.e("数据", "人脸注册成功！");
                         FaceAddActivity.this.finish();
                     }
 

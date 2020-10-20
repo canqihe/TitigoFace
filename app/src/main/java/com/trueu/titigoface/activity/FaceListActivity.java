@@ -262,8 +262,8 @@ public class FaceListActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, final int position) {
 
-                new AlertDialog.Builder(FaceListActivity.this).setIcon(R.drawable.ic_baseline_warning_24).setTitle("警告")
-                        .setMessage("确定要删除此人的注册信息吗？").setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(FaceListActivity.this).setIcon(R.drawable.ic_baseline_delete_24).setTitle("提示")
+                        .setMessage("删除后不可找回，确定执行此操作吗？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         FaceServer.getInstance().clearFacesByUserNum(FaceListActivity.this, userEntities.get(position).getUserNo());//删除本地特征库

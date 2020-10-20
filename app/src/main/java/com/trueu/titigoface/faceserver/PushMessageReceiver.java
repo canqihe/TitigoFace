@@ -2,34 +2,41 @@ package com.trueu.titigoface.faceserver;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
-import com.trueu.titigoface.activity.SettingActivity;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.trueu.titigoface.activity.FaceAddActivity;
 
 import cn.jpush.android.api.CmdMessage;
 import cn.jpush.android.api.CustomMessage;
-import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.JPushMessage;
 import cn.jpush.android.api.NotificationMessage;
 import cn.jpush.android.service.JPushMessageReceiver;
 
+import static com.trueu.titigoface.common.Constants.MSG_REG_STR;
+
 public class PushMessageReceiver extends JPushMessageReceiver {
-    private static final String TAG = "PushMessageReceiver";
+    private static final String TAG = "推送数据";
 
     @Override
     public void onMessage(Context context, CustomMessage customMessage) {
-        Log.e(TAG, "[onMessage] " + customMessage);
+        Log.e(TAG, "[收到消息onMessage] " + customMessage.message);
         processCustomMessage(context, customMessage);
+
+        Intent i = new Intent(context, PushRegServices.class);
+        i.putExtra(MSG_REG_STR, customMessage.message);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startService(i);
     }
 
     @Override
     public void onNotifyMessageOpened(Context context, NotificationMessage message) {
-        Log.e(TAG, "[消息被点击] " + message);
-        try {
+        Log.e(TAG, "[消息被点击] " + message.notificationContent);
+        Intent i = new Intent(context, PushRegServices.class);
+        i.putExtra(MSG_REG_STR, message.notificationContent);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startService(i);
+
+        /*try {
             //打开自定义的Activity
             Intent i = new Intent(context, SettingActivity.class);
             Bundle bundle = new Bundle();
@@ -41,7 +48,7 @@ public class PushMessageReceiver extends JPushMessageReceiver {
             context.startActivity(i);
         } catch (Throwable e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override

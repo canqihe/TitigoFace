@@ -8,6 +8,7 @@ public class Constants {
     public static final String DEFAULT_PASSWORD_VALUE = "111111";//默认密码
     public static String PLOT_ID = "PLOT_ID";
 
+    public static String MSG_REG_STR="msg_regStr";
 
     //baseurl
     public static final String BASE_URL = "http://device.titigo.top";
